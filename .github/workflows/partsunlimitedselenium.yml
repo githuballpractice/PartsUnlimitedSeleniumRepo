@@ -1,4 +1,4 @@
-name: .NET
+name: PartsUnlimited
 on:
   push:
     branches: [ master ]
@@ -17,7 +17,7 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.5
     
     - name: NuGet restore
-      run: nuget restore ${{github.workspace}}/PartsUnlimitedSeleniumRepo/PartsUnlimited.sln
+      run: nuget restore ${{github.workspace}}/**/*.sln
     
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
