@@ -26,7 +26,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: drop
-        path: ${{github.workspace}}/PartsUnlimitedSeleniumRepo/
+        path: ${{github.workspace}}/
         
         
         
