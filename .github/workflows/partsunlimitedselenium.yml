@@ -7,7 +7,6 @@ on:
 
 jobs:
   build:
-
     runs-on: windows-latest
 
     steps:
@@ -18,7 +17,7 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.5
     
     - name: NuGet restore
-      run: nuget restore
+      run: nuget restore ${{github.workspace}}/PartsUnlimited-aspnet45/PartsUnlimited.sln
     
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
@@ -27,7 +26,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: drop
-        path: ${{github.workspace}}\stagingdir
+        path: ${{github.workspace}}/PartsUnlimited-aspnet45/
         
         
         
