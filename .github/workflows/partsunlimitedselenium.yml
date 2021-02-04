@@ -20,13 +20,13 @@ jobs:
       uses: microsoft/setup-msbuild@v1
     
     - name: NuGet restore
-      run: nuget restore
+      run: nuget restore ${{github.workspace}}/PartsUnlimitedSeleniumRepo/PartsUnlimited.sln
       
     - name: Publish Build artifact
       uses: actions/upload-artifact@v2
       with:
         name: drop
-        path: ${{github.workspace}}/PartsUnlimited-aspnet45/
+        path: ${{github.workspace}}/PartsUnlimitedSeleniumRepo/
         
         
         
