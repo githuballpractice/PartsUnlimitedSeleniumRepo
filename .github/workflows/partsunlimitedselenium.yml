@@ -1,0 +1,33 @@
+name: .NET
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: Setup NuGet.exe for use with actions
+      uses: NuGet/setup-nuget@v1.0.5
+    
+    - name: NuGet restore
+      run: nuget restore
+    
+    - name: setup-msbuild
+      uses: microsoft/setup-msbuild@v1
+      
+    - name: Publish Build artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: drop
+        path: ${{github.workspace}}\stagingdir
+        
+        
+        
