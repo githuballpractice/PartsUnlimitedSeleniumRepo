@@ -31,10 +31,13 @@ jobs:
         name: drop
         path: ${{github.workspace}}/
       
-  SonarCloud:
-    runs-on: ubuntu-latest
+  SonarCloud Trigger:
     needs: [Build]
+    runs-on: ubuntu-latest 
     steps:  
+    - name: Clone Repository
+      uses: actions/checkout@v2
+      
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@v1.3
       env:
@@ -44,7 +47,7 @@ jobs:
   Deploy:
     name: Deploy to Azure Web App
     runs-on: windows-latest
-    needs: [Build, SonarCloud]
+    needs: [Build, SonarCloud Trigger]
     steps:
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
