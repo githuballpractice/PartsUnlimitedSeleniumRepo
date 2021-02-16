@@ -9,7 +9,7 @@ env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 jobs:
-  build:
+  Build:
     runs-on: windows-latest
    
     steps:
@@ -24,26 +24,27 @@ jobs:
     
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
+    
+    - name: Publish Build artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: drop
+        path: ${{github.workspace}}/
       
-  sonarcloud:
+  SonarCloud:
     runs-on: ubuntu-latest
+    needs: [Build]
     steps:  
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      
-    - name: Publish Build artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: drop
-        path: ${{github.workspace}}/
   
-  deploy:
-    name: DEPLOY TO AZURE WEB APP
+  Deploy:
+    name: Deploy to Azure Web App
     runs-on: windows-latest
-    needs: [build]
+    needs: [Build, SonarCloud]
     steps:
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
