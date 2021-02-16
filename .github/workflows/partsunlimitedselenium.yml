@@ -6,6 +6,7 @@ on:
     branches: [ master ]
 env:
   WEB_APP_NAME: narayanagithubwebapp
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 jobs:
   build:
@@ -31,6 +32,7 @@ jobs:
         typescript: true
         scan: true
         args: --debug -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     
       
     - name: Publish Build artifact
