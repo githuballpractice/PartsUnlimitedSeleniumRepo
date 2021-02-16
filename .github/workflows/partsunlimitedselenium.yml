@@ -31,7 +31,7 @@ jobs:
         name: drop
         path: ${{github.workspace}}/
       
-  SonarCloud Trigger:
+  SonarCloudTrigger:
     needs: [Build]
     runs-on: ubuntu-latest 
     steps:  
@@ -47,7 +47,7 @@ jobs:
   Deploy:
     name: Deploy to Azure Web App
     runs-on: windows-latest
-    needs: [Build, SonarCloud Trigger]
+    needs: [Build, SonarCloudTrigger]
     steps:
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
