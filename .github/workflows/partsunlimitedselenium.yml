@@ -8,6 +8,7 @@ env:
   WEB_APP_NAME: narayanagithubwebapp
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
+
 jobs:
   Build:
     runs-on: windows-latest
@@ -25,40 +26,22 @@ jobs:
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
     
+    - name: Copy Selenium Tests
+      uses: canastro/copy-file-action@master
+      with:
+        source: ${{github.workspace}}/test/PartsUnlimited.SeleniumTests/bin/Release
+        target: ${{github.workspace}}/TestAssemblies'
+    
+    - name: Copy Database Tests
+      uses: canastro/copy-file-action@master
+      with:
+        source: 'Database/Database'
+        target: ${{github.workspace}}/Database'
+    
     - name: Publish Build artifact
       uses: actions/upload-artifact@v2
       with:
         name: drop
         path: ${{github.workspace}}/
       
-  SonarCloudTrigger:
-    needs: [Build]
-    runs-on: ubuntu-latest 
-    steps:  
-    - name: Clone Repository
-      uses: actions/checkout@v2
-      
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@v1.3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   
-  Deploy:
-    name: Deploy to Azure Web App
-    runs-on: windows-latest
-    needs: [Build, SonarCloudTrigger]
-    steps:
-    - name: Download Build Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: drop
-        path: ${{github.workspace}}
-
-
-    - name: Azure WebApp Deploy
-      uses: Azure/webapps-deploy@v2
-      with:
-        app-name: ${{env.WEB_APP_NAME}}
-        publish-profile: ${{secrets.WEB_APP_PUBLISH_PROFILE}}
-
