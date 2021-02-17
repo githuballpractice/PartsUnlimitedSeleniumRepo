@@ -10,7 +10,7 @@ env:
 
 jobs:
   Build:
-    runs-on: windows-latest
+    runs-on: self-hosted
    
     steps:
     - name: Checkout
@@ -51,7 +51,7 @@ jobs:
       uses: cschleiden/webdeploy-action@v1
       with:
         webSiteName: 'PartsUnlimited'
-        package: ${{github.workspace}}\**\*.zip
+        package: ${{github.workspace}}
 
 
       
