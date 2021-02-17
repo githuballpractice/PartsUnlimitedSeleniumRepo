@@ -51,7 +51,7 @@ jobs:
       uses: cschleiden/webdeploy-action@v1
       with:
         webSiteName: 'PartsUnlimited'
-        package: C:\Windows\System32\actions-runner\_work\PartsUnlimitedSeleniumRepo\PartsUnlimitedSeleniumRepo
+        package: ${{github.workspace}}\**\*.zip
 
 
       
