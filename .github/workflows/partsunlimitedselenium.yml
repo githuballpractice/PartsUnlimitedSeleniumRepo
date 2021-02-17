@@ -4,6 +4,9 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+env:
+  SLN_FILE: PartsUnlimited.sln
+  PACKAGE_TEMP_PATH: Content\D_C\a\PartsUnlimited\PartsUnlimited\src\PartsUnlimitedWebsite\obj\Release\Package\PackageTmp
 
 jobs:
   Build:
@@ -17,39 +20,23 @@ jobs:
       uses: NuGet/setup-nuget@v1.0.5
     
     - name: NuGet restore
-      run: nuget restore ${{github.workspace}}/PartsUnlimited.sln
+      run: nuget restore ${{github.workspace}}/$(SLN_FILE)
     
-    - name: setup-msbuild
-      uses: microsoft/setup-msbuild@v1
+    - name: setup-MSBuild App
+      run: |
+        msbuild ${{env.SLN_FILE}} /p:TransformWebConfigEnabled=False /p:AutoParameterizationWebConfigConnectionStrings=False /p:Configuration=Release /p:Platform='Any CPU' /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="${{github.workspace}}\stagingdir"
     
     - name: Publish Build artifact
       uses: actions/upload-artifact@v2
       with:
         name: drop
-        path: ${{github.workspace}}/
+        path: ${{github.workspace}}/stagingdir
         
     - name: Checking Files
       run: |
           dir ${{github.workspace}}/
           echo ${{github.workspace}}
         
-  Deploy:
-    name: Deploy to Self-hosted
-    runs-on: self-hosted
-    needs: [Build]
-    steps:
-    - name: Download Build Artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: artifactdownload
-        path: ${{github.workspace}}
-        
-    - name: IIS Web App Deploy
-      uses: cschleiden/webdeploy-action@v1
-      with:
-        webSiteName: 'PartsUnlimited'
-        package: ${{github.workspace}}
-
-
+  
       
   
