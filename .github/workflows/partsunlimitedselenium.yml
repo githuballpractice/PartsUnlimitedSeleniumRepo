@@ -26,22 +26,29 @@ jobs:
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
     
-    - name: Copy Selenium Tests
-      uses: canastro/copy-file-action@master
-      with:
-        source: ${{github.workspace}}/test/PartsUnlimited.SeleniumTests/bin/Release
-        target: ${{github.workspace}}/TestAssemblies'
-    
-    - name: Copy Database Tests
-      uses: canastro/copy-file-action@master
-      with:
-        source: 'Database/Database'
-        target: ${{github.workspace}}/Database'
-    
     - name: Publish Build artifact
       uses: actions/upload-artifact@v2
       with:
         name: drop
         path: ${{github.workspace}}/
+        
+  Deploy:
+    name: Deploy to Self-hosted
+    runs-on: self-hosted
+    needs: [Build]
+    steps:
+    - name: Download Build Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: drop
+        path: ${{github.workspace}}
+        
+    - name: IIS Web App Deploy
+      uses: cschleiden/webdeploy-action@v1
+      with:
+        webSiteName: 'PartsUnlimited'
+        package: ${{ format('{0}\dist', runner.workspace) }}
+
+
       
   
