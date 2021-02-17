@@ -4,9 +4,6 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-env:
-  WEB_APP_NAME: narayanagithubwebapp
-
 
 jobs:
   Build:
@@ -44,7 +41,7 @@ jobs:
     - name: Download Build Artifact
       uses: actions/download-artifact@v2
       with:
-        name: drop
+        name: artifactdownload
         path: ${{github.workspace}}
         
     - name: IIS Web App Deploy
