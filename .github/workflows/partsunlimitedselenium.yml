@@ -32,6 +32,11 @@ jobs:
         name: drop
         path: ${{github.workspace}}/
         
+    - name: Checking Files
+      run: |
+          dir ${{github.workspace}}/
+          echo ${{github.workspace}}
+        
   Deploy:
     name: Deploy to Self-hosted
     runs-on: self-hosted
@@ -47,7 +52,7 @@ jobs:
       uses: cschleiden/webdeploy-action@v1
       with:
         webSiteName: 'PartsUnlimited'
-        package: ${{ format('{0}\dist', runner.workspace) }}
+        package: C:\Windows\System32\actions-runner\_work\PartsUnlimitedSeleniumRepo\PartsUnlimitedSeleniumRepo
 
 
       
